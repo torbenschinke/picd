@@ -26,4 +26,7 @@ type Settings struct {
 	Resolution Resolution    `json:"resolution"`
 	ISO        ISO           `json:"iso"`
 	Shutter    time.Duration `json:"shutter"`
+	Exposure   string        `json:"exposure"` // e.g. off, auto, night etc.
+	Mode       string        `json:"mode"`     // not really defined, force sensor mode e.g. 0 = auto
+	Rotation   int           `json:"rotation"` //0, 90, 180, or 270
 }

@@ -72,13 +72,28 @@ func (c *Controller) captureImage(w http.ResponseWriter, r *http.Request) {
 	if sshutter != "" {
 		shutter, err := time.ParseDuration(sshutter)
 		if err != nil {
-			logger.Println(fmt.Errorf("invalid y value: %w", err))
+			logger.Println(fmt.Errorf("invalid shutter: %w", err))
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
 		settings.Shutter = shutter
 	}
+
+	srotation := query.Get("rotation")
+	if srotation != "" {
+		rotation, err := strconv.Atoi(srotation)
+		if err != nil {
+			logger.Println(fmt.Errorf("invalid rotation: %w", err))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		settings.Rotation = rotation
+	}
+
+	settings.Exposure = query.Get("exposure")
+	settings.Mode = query.Get("mode")
 
 	img, err := c.service.CapturePhoto(settings)
 	if err != nil {

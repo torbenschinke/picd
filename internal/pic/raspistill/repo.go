@@ -48,10 +48,24 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 		args = append(args, "--shutter", strconv.FormatInt(us, 10))
 	}
 
+	if settings.Rotation != 0 {
+		args = append(args, "--rotation", strconv.Itoa(settings.Rotation))
+	}
+
+	if settings.Exposure != "" {
+		args = append(args, "--exposure", settings.Exposure)
+	}
+
+	if settings.Mode != "" {
+		args = append(args, "--mode", settings.Mode)
+	}
+
 	args = append(args, "-o", "-") // stream into stdout
 
 	cmd := exec.Command("raspistill", args...)
 	cmd.Env = os.Environ()
+
+	fmt.Println(cmd.String())
 
 	errBuf := &bytes.Buffer{}
 	imgBuf := bytes.NewBuffer(dst[:0])
