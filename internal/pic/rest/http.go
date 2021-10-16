@@ -43,22 +43,29 @@ func (c *Controller) captureImage(w http.ResponseWriter, r *http.Request) {
 		settings.ISO = pic.ISO(iso)
 	}
 
-	x, err := strconv.Atoi(query.Get("x"))
-	if err != nil {
-		logger.Println(fmt.Errorf("invalid x value: %w", err))
-		w.WriteHeader(http.StatusBadRequest)
-		return
+	sx := query.Get("x")
+	if sx != "" {
+		x, err := strconv.Atoi(sx)
+		if err != nil {
+			logger.Println(fmt.Errorf("invalid x value: %w", err))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		settings.Resolution.X = x
 	}
 
-	y, err := strconv.Atoi(query.Get("y"))
-	if err != nil {
-		logger.Println(fmt.Errorf("invalid y value: %w", err))
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	sy := query.Get("y")
+	if sy != "" {
+		y, err := strconv.Atoi(sy)
+		if err != nil {
+			logger.Println(fmt.Errorf("invalid y value: %w", err))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
-	settings.Resolution.X = x
-	settings.Resolution.Y = y
+		settings.Resolution.Y = y
+	}
 
 	img, err := c.service.CapturePhoto(settings)
 	if err != nil {

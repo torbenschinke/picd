@@ -1,6 +1,7 @@
 package raspistill
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/torbenschinke/picd/internal/pic"
 	"golang.org/x/sync/semaphore"
@@ -44,10 +45,18 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 
 	args = append(args, "-o -") // stream into stdout
 
-
 	cmd := exec.Command("raspistill", args...)
 	cmd.Env = os.Environ()
 
+	errBuf := &bytes.Buffer{}
+	imgBuf := bytes.NewBuffer(dst[:0])
 
-	return nil, nil
+	cmd.Stderr = errBuf
+	cmd.Stdout = imgBuf
+
+	if err := cmd.Run(); err != nil {
+		return nil, err
+	}
+
+	return imgBuf.Bytes(), nil
 }
