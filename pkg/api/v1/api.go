@@ -1,5 +1,7 @@
 package v1
 
+import "time"
+
 type Resolution struct {
 	X int
 	Y int
@@ -20,7 +22,8 @@ type StillCamera struct {
 }
 
 type Settings struct {
-	Camera     CameraID   `json:"id"`
-	Resolution Resolution `json:"resolution"`
-	ISO        ISO        `json:"iso"`
+	Camera     CameraID      `json:"id"`
+	Resolution Resolution    `json:"resolution"`
+	ISO        ISO           `json:"iso"`
+	Shutter    time.Duration `json:"shutter"`
 }

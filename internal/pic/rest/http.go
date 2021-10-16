@@ -7,6 +7,7 @@ import (
 	"github.com/torbenschinke/picd/pkg/server"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type Authenticator interface {
@@ -65,6 +66,18 @@ func (c *Controller) captureImage(w http.ResponseWriter, r *http.Request) {
 		}
 
 		settings.Resolution.Y = y
+	}
+
+	sshutter := query.Get("shutter")
+	if sshutter != "" {
+		shutter, err := time.ParseDuration(sshutter)
+		if err != nil {
+			logger.Println(fmt.Errorf("invalid y value: %w", err))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		settings.Shutter = shutter
 	}
 
 	img, err := c.service.CapturePhoto(settings)

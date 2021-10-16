@@ -28,8 +28,8 @@ func NewHandler(service *dashboard.Service) *Handler {
 
 func (h *Handler) index(w http.ResponseWriter, r *http.Request) {
 	logger := logging.FromContext(r.Context())
-	cams,err := h.service.ListCameras()
-	if err != nil{
+	cams, err := h.service.ListCameras()
+	if err != nil {
 		logger.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
@@ -46,7 +46,7 @@ func (h *Handler) loadCam(w http.ResponseWriter, r *http.Request) {
 	logger := logging.FromContext(r.Context())
 	params := server.ParamsFromContext(r.Context())
 	id := params.ByName("id")
-	if err := h.service.LoadCameraImage(id, w); err != nil {
+	if err := h.service.LoadCameraImage(id, r.URL.Query(), w); err != nil {
 		logger.Println(err)
 	}
 

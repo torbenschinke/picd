@@ -32,15 +32,20 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 
 	var args []string
 	if settings.ISO != "" {
-		args = append(args, "--ISO",string(settings.ISO))
+		args = append(args, "--ISO", string(settings.ISO))
 	}
 
 	if settings.Resolution.X != 0 {
-		args = append(args, "--width",strconv.Itoa(settings.Resolution.X))
+		args = append(args, "--width", strconv.Itoa(settings.Resolution.X))
 	}
 
 	if settings.Resolution.Y != 0 {
-		args = append(args, "--height",strconv.Itoa(settings.Resolution.Y))
+		args = append(args, "--height", strconv.Itoa(settings.Resolution.Y))
+	}
+
+	if settings.Shutter != 0 {
+		us := settings.Shutter.Microseconds()
+		args = append(args, "--shutter", strconv.FormatInt(us, 10))
 	}
 
 	args = append(args, "-o", "-") // stream into stdout

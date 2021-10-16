@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 type CameraNode struct {
@@ -34,7 +35,7 @@ func (s *Service) ListCameras() ([]CameraNode, error) {
 	}, nil
 }
 
-func (s *Service) LoadCameraImage(id string, w io.Writer) error {
+func (s *Service) LoadCameraImage(id string, params url.Values, w io.Writer) error {
 	cams, err := s.ListCameras()
 	if err != nil {
 		return fmt.Errorf("cannot list cameras: %w", err)
@@ -52,7 +53,7 @@ func (s *Service) LoadCameraImage(id string, w io.Writer) error {
 		return fmt.Errorf("camera unknown")
 	}
 
-	resp, err := http.Get(camNode.Host + "/api/v1/camera/1/capture")
+	resp, err := http.Get(camNode.Host + "/api/v1/camera/1/capture?" + params.Encode())
 	if err != nil {
 		return fmt.Errorf("cannot reach camera node: %w", err)
 	}
