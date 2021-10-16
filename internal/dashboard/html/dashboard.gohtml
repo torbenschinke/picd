@@ -1,0 +1,26 @@
+{{define "dashboard"}}
+    {{template "header"}}
+    <!-- Start your project here-->
+    <div class="container my-5">
+        {{range .}}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card">
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                        <img src="/camera/{{.ID}}/photo" class="img-fluid">
+                        <a href="#!">
+                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{.Name}}</h5>
+                        <p class="card-text">
+                            Kamera
+                        </p>
+                        <a href="/camera/{{.ID}}/photo" class="btn btn-primary">Vollbild</a>
+                    </div>
+                </div>
+            </div>
+        {{end}}
+    </div>
+    {{template "footer"}}
+{{end}}

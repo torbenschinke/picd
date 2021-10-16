@@ -83,6 +83,6 @@ func (c *Controller) captureImage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func Configure(r server.Router, c *Controller) {
+func (c *Controller) Configure(r server.Router) {
 	r.HandlerFunc(http.MethodGet, "/api/v1/camera/:id/capture", c.captureImage)
 }
