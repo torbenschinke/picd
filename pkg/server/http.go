@@ -32,9 +32,9 @@ func Serve(ctx context.Context, configurators ...RouterConfigurator) error {
 	}
 
 	srv := &http.Server{
-		ReadTimeout:  30 * time.Second,
-		WriteTimeout: 30 * time.Second,
-		IdleTimeout:  30 * time.Second,
+		ReadTimeout:  120 * time.Second,
+		WriteTimeout: 120 * time.Second,
+		IdleTimeout:  120 * time.Second,
 		Handler:      router,
 	}
 
