@@ -35,6 +35,7 @@ func NewCameraService(repo StillCameraRepository) *CameraService {
 
 func (s *CameraService) CapturePhoto(settings Settings) (Image, error) {
 	image := s.pool.Get().(*img)
+	image.alive = true
 	buf := image.buf
 	buf, err := s.repo.CapturePhoto(settings, buf)
 	if err != nil {

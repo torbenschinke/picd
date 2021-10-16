@@ -32,18 +32,18 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 
 	var args []string
 	if settings.ISO != "" {
-		args = append(args, "--ISO "+string(settings.ISO))
+		args = append(args, "--ISO",string(settings.ISO))
 	}
 
 	if settings.Resolution.X != 0 {
-		args = append(args, "--width "+strconv.Itoa(settings.Resolution.X))
+		args = append(args, "--width",strconv.Itoa(settings.Resolution.X))
 	}
 
 	if settings.Resolution.Y != 0 {
-		args = append(args, "--height "+strconv.Itoa(settings.Resolution.Y))
+		args = append(args, "--height",strconv.Itoa(settings.Resolution.Y))
 	}
 
-	args = append(args, "-o -") // stream into stdout
+	args = append(args, "-o", "-") // stream into stdout
 
 	cmd := exec.Command("raspistill", args...)
 	cmd.Env = os.Environ()
@@ -55,6 +55,7 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 	cmd.Stdout = imgBuf
 
 	if err := cmd.Run(); err != nil {
+		fmt.Println(errBuf.String())
 		return nil, err
 	}
 

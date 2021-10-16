@@ -37,6 +37,9 @@ func (a *Application) Run(ctx context.Context) error {
 		Handler:      router,
 	}
 
+	
+	logger := logging.FromContext(ctx)
+	logger.Println("starting server...")
 	ln, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		return fmt.Errorf("cannot listen: %w", err)
@@ -46,7 +49,6 @@ func (a *Application) Run(ctx context.Context) error {
 	go func() {
 		<-ctx.Done()
 
-		logger := logging.FromContext(ctx)
 		logger.Println("Serve: context closed")
 		shutdownCtx, done := context.WithTimeout(context.Background(), 5*time.Second)
 		defer done()
