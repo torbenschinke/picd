@@ -8,9 +8,10 @@ import (
 )
 
 type CameraNode struct {
-	ID   string
-	Name string
-	Host string
+	ID       string
+	Name     string
+	Host     string
+	Rotation int
 }
 
 type Service struct {
@@ -23,14 +24,16 @@ func NewService() *Service {
 func (s *Service) ListCameras() ([]CameraNode, error) {
 	return []CameraNode{
 		{
-			ID:   "2",
-			Name: "Stube oben",
-			Host: "http://bahnsen-sat-2:8080",
+			ID:       "2",
+			Name:     "Stube oben",
+			Host:     "http://bahnsen-sat-2:8080",
+			Rotation: 180,
 		},
 		{
-			ID:   "1",
-			Name: "Garten",
-			Host: "http://bahnsen-sat-1:8080",
+			ID:       "1",
+			Name:     "Garten",
+			Host:     "http://bahnsen-sat-1:8080",
+			Rotation: 0,
 		},
 	}, nil
 }
