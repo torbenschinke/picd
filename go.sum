@@ -1,6 +1,15 @@
 github.com/golangee/log v0.0.0-20201214101358-42b3097bd428 h1:J2rQYMbjzN0Y/NcW+e+eEUopSaWANTG6dYEDmNpWWYg=
 github.com/golangee/log v0.0.0-20201214101358-42b3097bd428/go.mod h1:dUiMZFHdnlIsi6KOyAj+5jT+THo32aFtAoFMTRBlwuo=
+github.com/jonboulle/clockwork v0.2.2 h1:UOGuzwb1PwsrDAObMuhUnj0p5ULPj8V/xJ7Kx9qUBdQ=
+github.com/jonboulle/clockwork v0.2.2/go.mod h1:Pkfl5aHPm1nk2H9h0bjmnJD/BcgbGXUBGnn1kMkgxc8=
 github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
+github.com/torbenschinke/i2c v0.0.0-20211228165033-f4cbfaab8d62 h1:PUXd4b9NOcBiIqISGqvKay36p9QH7x8fKj8z1uCieiA=
+github.com/torbenschinke/i2c v0.0.0-20211228165033-f4cbfaab8d62/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
+periph.io/x/conn/v3 v3.6.10 h1:gwU4ssmZkq1D/uz8hU91i/COo2c9DrRaS4PJZBbCd+c=
+periph.io/x/conn/v3 v3.6.10/go.mod h1:UqWNaPMosWmNCwtufoTSTTYhB2wXWsMRAJyo1PlxO4Q=
+periph.io/x/d2xx v0.0.4/go.mod h1:38Euaaj+s6l0faIRHh32a+PrjXvxFTFkPBEQI0TKg34=
+periph.io/x/host/v3 v3.7.2 h1:rCAUxkzy2xrzh18HP2AoVwTL/fEKqmcJ1icsZQGM58Q=
+periph.io/x/host/v3 v3.7.2/go.mod h1:nHMlzkPwmnHyP9Tn0I8FV+e0N3K7TjFXLZkIWzAicog=

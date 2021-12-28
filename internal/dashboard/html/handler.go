@@ -2,6 +2,7 @@ package html
 
 import (
 	"embed"
+	"fmt"
 	"github.com/torbenschinke/picd/internal/dashboard"
 	"github.com/torbenschinke/picd/pkg/logging"
 	"github.com/torbenschinke/picd/pkg/server"
@@ -35,6 +36,16 @@ func (h *Handler) index(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for i := range cams {
+		t, h, err := h.service.LoadSensors(cams[i].ID)
+		if err != nil {
+			logger.Println(err)
+		}
+
+		cams[i].Temp = fmt.Sprintf("%.1f°C", t)
+		cams[i].Hum = fmt.Sprintf("%.1f%%", h)
+	}
+
 	if err := h.tpls.ExecuteTemplate(w, "dashboard", cams); err != nil {
 		logger.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
@@ -49,7 +60,6 @@ func (h *Handler) loadCam(w http.ResponseWriter, r *http.Request) {
 	if err := h.service.LoadCameraImage(id, r.URL.Query(), w); err != nil {
 		logger.Println(err)
 	}
-
 }
 
 func (h *Handler) Configure(r server.Router) {

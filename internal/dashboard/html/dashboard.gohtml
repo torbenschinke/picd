@@ -14,7 +14,9 @@
                     <div class="card-body">
                         <h5 class="card-title">{{.Name}}</h5>
                         <p class="card-text">
-                            Kamera
+                            Kamera<br>
+                            {{.Temp}}<br>
+                            {{.Hum}}
                         </p>
                         <a href="/camera/{{.ID}}/photo?rotation={{.Rotation}}" class="btn btn-primary">Vollbild</a>
                         <a href="/camera/{{.ID}}/photo?rotation={{.Rotation}}&iso=3200&shutter=30s&exposure=night" class="btn btn-primary">Nachtmodus</a>
