@@ -5,17 +5,26 @@ import (
 	"fmt"
 	"github.com/torbenschinke/picd/internal/pic"
 	"golang.org/x/sync/semaphore"
+	"log"
 	"os"
 	"os/exec"
 	"strconv"
 )
 
 type CameraRepo struct {
-	mutex *semaphore.Weighted
+	mutex  *semaphore.Weighted
+	exec   string
+	libcam bool
 }
 
 func NewCameraRepo() *CameraRepo {
 	r := &CameraRepo{mutex: semaphore.NewWeighted(1)}
+	r.exec = "raspistill"
+	if _, err := os.Stat("/usr/bin/libcamera-still"); err == nil {
+		log.Printf("detected libcamera-still instead raspistill\n")
+		r.exec = "libcamera-still"
+		r.libcam = true
+	}
 	return r
 }
 
@@ -60,9 +69,13 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 		args = append(args, "--mode", settings.Mode)
 	}
 
+	if r.libcam {
+		args = append(args, "--nopreview")
+	}
+
 	args = append(args, "-o", "-") // stream into stdout
 
-	cmd := exec.Command("raspistill", args...)
+	cmd := exec.Command(r.exec, args...)
 	cmd.Env = os.Environ()
 
 	fmt.Println(cmd.String())

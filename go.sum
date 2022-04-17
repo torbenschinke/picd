@@ -10,6 +10,8 @@ github.com/torbenschinke/i2c v0.0.0-20211228171520-fd54dfa8d63b h1:Z1SPniTbjBq11
 github.com/torbenschinke/i2c v0.0.0-20211228171520-fd54dfa8d63b/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
 github.com/torbenschinke/i2c v0.0.0-20211231140025-56252f60614c h1:l4vleJuFqK/xt3rYDzQUIZgSfPDNe7UgJJ6I/WOYkPo=
 github.com/torbenschinke/i2c v0.0.0-20211231140025-56252f60614c/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
+github.com/torbenschinke/i2c v0.0.0-20220417094557-4938491246b0 h1:V5EswgZaR/DreZUQqb4A5Pl377PxptoVDy0U5XQlKsQ=
+github.com/torbenschinke/i2c v0.0.0-20220417094557-4938491246b0/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c/go.mod h1:RxMgew5VJxzue5/jJTE5uejpjVlOe/izrB70Jof72aM=
 periph.io/x/conn/v3 v3.6.10 h1:gwU4ssmZkq1D/uz8hU91i/COo2c9DrRaS4PJZBbCd+c=

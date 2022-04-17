@@ -29,7 +29,7 @@ func (s *Service) ListCameras() ([]CameraNode, error) {
 		{
 			ID:       "2",
 			Name:     "Stube oben",
-			Host:     "http://bahnsen-sat-2:8080",
+			Host:     "http://bahnsen-sat-3:8080",
 			Rotation: 180,
 		},
 		{
