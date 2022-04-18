@@ -44,6 +44,18 @@ func (c *Controller) captureImage(w http.ResponseWriter, r *http.Request) {
 		settings.ISO = pic.ISO(iso)
 	}
 
+	quali := query.Get("quality")
+	if quali != "" {
+		q, err := strconv.Atoi(quali)
+		if err != nil {
+			logger.Println(fmt.Errorf("invalid quality value: %w", err))
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		settings.Quality = q
+	}
+
 	sx := query.Get("x")
 	if sx != "" {
 		x, err := strconv.Atoi(sx)

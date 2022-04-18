@@ -40,8 +40,22 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 	defer r.mutex.Release(1)
 
 	var args []string
-	if settings.ISO != "" {
-		args = append(args, "--ISO", string(settings.ISO))
+	if r.libcam {
+		// don't have iso yet
+		v, _ := strconv.Atoi(string(settings.ISO))
+		gainLike := v / 100 // iso-100 => gain=1, iso-200 => gain=2 etc.
+		if gainLike > 0 {
+			args = append(args, "--gain", strconv.Itoa(gainLike))
+		}
+
+	} else {
+		if settings.ISO != "" {
+			args = append(args, "--ISO", string(settings.ISO))
+		}
+	}
+
+	if settings.Quality != 0 {
+		args = append(args, "--quality", strconv.Itoa(settings.Quality))
 	}
 
 	if settings.Resolution.X != 0 {
@@ -57,12 +71,28 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 		args = append(args, "--shutter", strconv.FormatInt(us, 10))
 	}
 
-	if settings.Rotation != 0 {
-		args = append(args, "--rotation", strconv.Itoa(settings.Rotation))
+	if r.libcam {
+		var exifRot = "0"
+		switch settings.Rotation {
+		case 90:
+			exifRot = "6"
+		case 180:
+			exifRot = "4"
+		case 270:
+			exifRot = "8"
+		}
+		args = append(args, "--exif", "IFD0.Orientation="+exifRot)
+	} else {
+		if settings.Rotation != 0 {
+			args = append(args, "--rotation", strconv.Itoa(settings.Rotation))
+		}
 	}
 
-	if settings.Exposure != "" {
-		args = append(args, "--exposure", settings.Exposure)
+	if !r.libcam {
+		// just ignore that, just sport or normal, unusable for us
+		if settings.Exposure != "" {
+			args = append(args, "--exposure", settings.Exposure)
+		}
 	}
 
 	if settings.Mode != "" {
