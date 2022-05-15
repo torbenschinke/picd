@@ -14,7 +14,7 @@
 
         <div class="bg-white shadow rounded-lg p-10">
             <div class="flex flex-col gap-1 text-center items-center">
-                <p id="caption"></p>
+                <a id="dl" href="" download=""><p id="caption"></p></a>
                 <img id="display" class="h-128 w-128 bg-white p-2 rounded-lg shadow mb-4"
                      src="/image/{{.Cluster.First.Name}}" alt="">
             </div>
@@ -32,6 +32,11 @@
             Play
         </button>
 
+        <button id="btnStop" style="display:none"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Stop
+        </button>
+
     </main>
 </div>
 
@@ -43,6 +48,8 @@
     let names = JSON.parse({{.JsonNames}});
     let idx = 0;
     let loaded = true;
+    let shouldStop = false;
+
     document.getElementById("btnNext").addEventListener("click", ev => {
         idx++;
         update();
@@ -57,8 +64,18 @@
         document.getElementById("btnNext").style.display = "none";
         document.getElementById("btnBack").style.display = "none";
         document.getElementById("btnPlay").style.display = "none";
+        document.getElementById("btnStop").style.display = "initial";
 
         play();
+    })
+
+    document.getElementById("btnStop").addEventListener("click", ev => {
+        document.getElementById("btnNext").style.display = "initial";
+        document.getElementById("btnBack").style.display = "initial";
+        document.getElementById("btnPlay").style.display = "initial";
+        document.getElementById("btnStop").style.display = "none";
+
+        stop();
     })
 
     document.addEventListener("keyup", (evt) => {
@@ -74,6 +91,11 @@
     });
 
     function play() {
+        if (shouldStop) {
+            shouldStop = false;
+            return;
+        }
+
         if (loaded) {
             idx++;
             update();
@@ -81,7 +103,12 @@
         setTimeout(play, 50);
     }
 
+    function stop() {
+        shouldStop = true;
+    }
+
     let caption = document.getElementById("caption");
+    let dllink = document.getElementById("dl");
 
     function update() {
         if (idx > names.length) {
@@ -96,6 +123,7 @@
         img.src = "/image/" + names[idx];
         // console.log("should show", img.src);
         caption.textContent = names[idx];
+        dllink.href = "/image/" + names[idx]
     }
 
     console.log("loaded");
