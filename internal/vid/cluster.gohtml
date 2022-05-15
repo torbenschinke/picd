@@ -28,13 +28,21 @@
             Vor
         </button>
 
+        <button id="btnPlay" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Play
+        </button>
+
     </main>
 </div>
 
 <script>
     let img = document.getElementById("display");
+    img.addEventListener("load", ev => {
+        loaded = true;
+    });
     let names = JSON.parse({{.JsonNames}});
     let idx = 0;
+    let loaded = true;
     document.getElementById("btnNext").addEventListener("click", ev => {
         idx++;
         update();
@@ -45,19 +53,36 @@
         update();
     });
 
-    document.addEventListener ("keyup", (evt) => {
-        if (evt.keyCode===37) {
+    document.getElementById("btnPlay").addEventListener("click", ev => {
+        document.getElementById("btnNext").style.display = "none";
+        document.getElementById("btnBack").style.display = "none";
+        document.getElementById("btnPlay").style.display = "none";
+
+        play();
+    })
+
+    document.addEventListener("keyup", (evt) => {
+        if (evt.keyCode === 37) {
             idx--;
             update();
         }
 
-        if (evt.keyCode===39) {
+        if (evt.keyCode === 39) {
             idx++;
             update();
         }
     });
 
+    function play() {
+        if (loaded) {
+            idx++;
+            update();
+        }
+        setTimeout(play, 50);
+    }
+
     let caption = document.getElementById("caption");
+
     function update() {
         if (idx > names.length) {
             idx = 0;
@@ -67,8 +92,9 @@
             idx = names.length - 1;
         }
 
+        loaded = false;
         img.src = "/image/" + names[idx];
-        console.log("should show", img.src);
+        // console.log("should show", img.src);
         caption.textContent = names[idx];
     }
 
