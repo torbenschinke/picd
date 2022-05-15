@@ -71,13 +71,29 @@ func (r *CameraRepo) CapturePhoto(settings pic.Settings, dst []byte) ([]byte, er
 		args = append(args, "--shutter", strconv.FormatInt(us, 10))
 	}
 
+	if settings.AWB != "" {
+		args = append(args, "--awb", settings.AWB)
+	}
+
+	if settings.Saturation != "" {
+		args = append(args, "--saturation", settings.Saturation)
+	}
+
+	if settings.Denoise != "" {
+		args = append(args, "--denoise", settings.Denoise)
+	}
+
+	if settings.EV != "" {
+		args = append(args, "--ev", settings.EV)
+	}
+
 	if r.libcam {
 		var exifRot = "0"
 		switch settings.Rotation {
 		case 90:
 			exifRot = "6"
 		case 180:
-			exifRot = "4"
+			exifRot = "3"
 		case 270:
 			exifRot = "8"
 		}

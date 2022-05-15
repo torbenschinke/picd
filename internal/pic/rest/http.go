@@ -104,6 +104,14 @@ func (c *Controller) captureImage(w http.ResponseWriter, r *http.Request) {
 		settings.Rotation = rotation
 	}
 
+	if awb := query.Get("awb"); awb != "" {
+		settings.AWB = awb
+	}
+
+	settings.Saturation = query.Get("saturation")
+	settings.EV = query.Get("ev")
+	settings.Denoise = query.Get("denoise")
+
 	settings.Exposure = query.Get("exposure")
 	settings.Mode = query.Get("mode")
 

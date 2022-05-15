@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta http-equiv="refresh" content="10"/>
+</head>
+<body class="bg-gray-100">
+
+<div class="app bg-gray-100 h-screen p-12">
+    <main class="grid grid-cols-1 gap-6  w-2xl container px-2 mx-auto">
+        <div class="bg-white shadow rounded-lg p-10">
+            <div class="flex flex-col gap-1 text-center items-center">
+                <a href="/current.jpg">
+                    <img class="h-128 w-128 bg-white p-2 rounded-lg shadow mb-4" src="/current.jpg" alt="">
+                </a>
+                <p class="font-semibold">cat-cam-01</p>
+                <div class="text-sm leading-normal text-gray-400 flex justify-center items-center">
+                    <svg viewBox="0 0 24 24" class="mr-1" width="16" height="16" stroke="currentColor" stroke-width="2"
+                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Am Vorberg 16
+                </div>
+            </div>
+            <div class="flex justify-center items-center gap-2 my-3">
+                <div class="font-semibold text-center mx-4">
+                    <p class="text-black">{{.ImageCount}}</p>
+                    <span class="text-gray-400">Aufnahmen</span>
+                </div>
+                <div class="font-semibold text-center mx-4">
+                    <p class="text-black">{{.LastImageMod}}</p>
+                    <span class="text-gray-400">letzte Aufnahme</span>
+                </div>
+                <div class="font-semibold text-center mx-4">
+                    <p class="text-black">{{.GBInUse}}</p>
+                    <span class="text-gray-400">Speicherplatz</span>
+                </div>
+                <div class="font-semibold text-center mx-4">
+                    <p class="text-black">{{.Degree}}</p>
+                    <span class="text-gray-400">Temperatur</span>
+                </div>
+                <div class="font-semibold text-center mx-4">
+                    <p class="text-black">{{.Hum}}</p>
+                    <span class="text-gray-400">rel. Feuchtigkeit</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-10">
+            {{range $i, $a  := .Cluster}}
+                <a href="cluster/{{$i}}"><p>{{$a.From}} bis {{$a.To}} ({{$a.ImageCount}} Aufnahmen)</p></a>
+            {{end}}
+        </div>
+    </main>
+</div>
+</body>
+</html>

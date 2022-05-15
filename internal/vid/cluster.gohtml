@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cluster Details</title>
+</head>
+<body class="bg-gray-100">
+
+<div class="app bg-gray-100 h-screen p-12">
+    <main class="grid grid-cols-1 gap-6  w-2xl container px-2 mx-auto">
+
+
+        <div class="bg-white shadow rounded-lg p-10">
+            <div class="flex flex-col gap-1 text-center items-center">
+                <p id="caption"></p>
+                <img id="display" class="h-128 w-128 bg-white p-2 rounded-lg shadow mb-4"
+                     src="/image/{{.Cluster.First.Name}}" alt="">
+            </div>
+        </div>
+
+        <button id="btnBack" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Zurück
+        </button>
+
+        <button id="btnNext" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Vor
+        </button>
+
+    </main>
+</div>
+
+<script>
+    let img = document.getElementById("display");
+    let names = JSON.parse({{.JsonNames}});
+    let idx = 0;
+    document.getElementById("btnNext").addEventListener("click", ev => {
+        idx++;
+        update();
+    });
+
+    document.getElementById("btnBack").addEventListener("click", ev => {
+        idx--;
+        update();
+    });
+
+    document.addEventListener ("keyup", (evt) => {
+        if (evt.keyCode===37) {
+            idx--;
+            update();
+        }
+
+        if (evt.keyCode===39) {
+            idx++;
+            update();
+        }
+    });
+
+    let caption = document.getElementById("caption");
+    function update() {
+        if (idx > names.length) {
+            idx = 0;
+        }
+
+        if (idx < 0) {
+            idx = names.length - 1;
+        }
+
+        img.src = "/image/" + names[idx];
+        console.log("should show", img.src);
+        caption.textContent = names[idx];
+    }
+
+    console.log("loaded");
+</script>
+</body>
+</html>

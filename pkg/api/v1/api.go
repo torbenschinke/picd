@@ -30,4 +30,8 @@ type Settings struct {
 	Mode       string        `json:"mode"`     // not really defined, force sensor mode e.g. 0 = auto
 	Rotation   int           `json:"rotation"` //0, 90, 180, or 270
 	Quality    int           `json:"quality"`
+	AWB        string        `json:"awb"`
+	Saturation string        `json:"saturation"`
+	Denoise    string        `json:"denoise"`
+	EV         string        `json:"ev"`
 }

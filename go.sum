@@ -4,12 +4,6 @@ github.com/jonboulle/clockwork v0.2.2 h1:UOGuzwb1PwsrDAObMuhUnj0p5ULPj8V/xJ7Kx9q
 github.com/jonboulle/clockwork v0.2.2/go.mod h1:Pkfl5aHPm1nk2H9h0bjmnJD/BcgbGXUBGnn1kMkgxc8=
 github.com/julienschmidt/httprouter v1.3.0 h1:U0609e9tgbseu3rBINet9P48AI/D3oJs4dN7jwJOQ1U=
 github.com/julienschmidt/httprouter v1.3.0/go.mod h1:JR6WtHb+2LUe8TCKY3cZOxFyyO8IZAc4RVcycCCAKdM=
-github.com/torbenschinke/i2c v0.0.0-20211228165033-f4cbfaab8d62 h1:PUXd4b9NOcBiIqISGqvKay36p9QH7x8fKj8z1uCieiA=
-github.com/torbenschinke/i2c v0.0.0-20211228165033-f4cbfaab8d62/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
-github.com/torbenschinke/i2c v0.0.0-20211228171520-fd54dfa8d63b h1:Z1SPniTbjBq11YWaeypJ8kom69TYw8VSAMFJYHvJ/4E=
-github.com/torbenschinke/i2c v0.0.0-20211228171520-fd54dfa8d63b/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
-github.com/torbenschinke/i2c v0.0.0-20211231140025-56252f60614c h1:l4vleJuFqK/xt3rYDzQUIZgSfPDNe7UgJJ6I/WOYkPo=
-github.com/torbenschinke/i2c v0.0.0-20211231140025-56252f60614c/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
 github.com/torbenschinke/i2c v0.0.0-20220417094557-4938491246b0 h1:V5EswgZaR/DreZUQqb4A5Pl377PxptoVDy0U5XQlKsQ=
 github.com/torbenschinke/i2c v0.0.0-20220417094557-4938491246b0/go.mod h1:Ckwghlv6pHJvmmEkcAO2U2eqUGKMQcspQc80A27AvSU=
 golang.org/x/sync v0.0.0-20210220032951-036812b2e83c h1:5KslGYwFpkhGh+Q16bwMP3cOontH8FOep7tGV86Y7SQ=
