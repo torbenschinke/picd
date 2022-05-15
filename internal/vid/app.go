@@ -80,7 +80,7 @@ func (a *Application) removeOldest() {
 func (a *Application) runTimelapse() {
 	// https://www.waveshare.com/wiki/RPi_Camera_(C)#libcamera-still
 	// libcamera-still --timelapse 1000 -q 80 --timestamp  --latest current.jpg --nopreview --width 1280 --height 720 -t 0
-	cmd := exec.Command("libcamera-still",
+	cmd := exec.Command("/usr/bin/libcamera-still",
 		"--timelapse", "1000",
 		"-q", "80",
 		"--timestamp",
