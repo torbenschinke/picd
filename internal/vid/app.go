@@ -86,11 +86,12 @@ func (a *Application) runTimelapse() {
 		"--timestamp",
 		"--latest", "current.jpg",
 		"--nopreview",
-		"--width", "1280",
+		"--width", "960",
 		"--height", "720",
 		"-t", "0",
-		"--exif", "IFD0.Orientation=3", // 3=180
-		"--saturation", "0")
+		"--exif", "IFD0.Orientation=8", // 3=180, 6=90, 8=270
+		//"--saturation", "0",
+	)
 
 	cmd.Env = os.Environ()
 	cmd.Stdout = io.Discard
