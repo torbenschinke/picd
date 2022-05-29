@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"encoding/json"
 	"fmt"
+	"github.com/shirou/gopsutil/disk"
 	"github.com/torbenschinke/picd/internal/pic"
 	"github.com/torbenschinke/picd/internal/sensor"
 	"github.com/torbenschinke/picd/pkg/server"
@@ -23,6 +24,9 @@ var pageIndex string
 
 //go:embed cluster.gohtml
 var pageCluster string
+
+//go:embed history.gohtml
+var pageHistory string
 
 type idxModel struct {
 	ImageCount   int
@@ -54,11 +58,11 @@ func (c idxCluster) To() string {
 }
 
 type Controller struct {
-	sensors            *sensor.SenseService
-	camera             *pic.CameraService
-	app                *Application
-	idxTpl, detailsTpl *template.Template
-	loc                *time.Location
+	sensors                        *sensor.SenseService
+	camera                         *pic.CameraService
+	app                            *Application
+	idxTpl, detailsTpl, historyTpl *template.Template
+	loc                            *time.Location
 }
 
 var globalLoc *time.Location
@@ -71,12 +75,13 @@ func NewController(app *Application, sensors *sensor.SenseService, camera *pic.C
 	globalLoc = loc
 	idx := template.Must(template.New("index.gohtml").Parse(pageIndex))
 	details := template.Must(template.New("cluster.gohtml").Parse(pageCluster))
-	return &Controller{app: app, sensors: sensors, camera: camera, idxTpl: idx, loc: loc, detailsTpl: details}
+	historyTpl := template.Must(template.New("history.gohtml").Parse(pageHistory))
+	return &Controller{app: app, sensors: sensors, camera: camera, idxTpl: idx, loc: loc, detailsTpl: details, historyTpl: historyTpl}
 }
 
 func (c *Controller) index(w http.ResponseWriter, r *http.Request) {
-	m := c.model()
-	if err := c.idxTpl.Execute(w, m); err != nil {
+	//m := c.model()
+	if err := c.idxTpl.Execute(w, nil); err != nil {
 		fmt.Println(err)
 	}
 }
@@ -190,10 +195,103 @@ func (c *Controller) image(w http.ResponseWriter, r *http.Request) {
 	io.Copy(w, file)
 }
 
+func (c *Controller) history(w http.ResponseWriter, r *http.Request) {
+	type Model struct {
+		Max   int
+		Files []string
+		Dates []string
+	}
+
+	files, _ := os.ReadDir(c.app.timelapseDir)
+	var names []string
+	var dates []string
+	for _, file := range files {
+		ms, err := strconv.Atoi(file.Name()[:len(file.Name())-4])
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		names = append(names, file.Name())
+		s := time.Unix(int64(ms), 0).Format(justTime)
+		dates = append(dates, s)
+	}
+
+	m := Model{
+		Max:   len(files),
+		Files: names,
+		Dates: dates,
+	}
+
+	jsn, err := json.Marshal(m)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	if err := c.historyTpl.Execute(w, template.JS(jsn)); err != nil {
+		fmt.Println(err)
+	}
+}
+
 func (c *Controller) Configure(r server.Router) {
 	r.HandlerFunc(http.MethodGet, "/", c.index)
 	r.HandlerFunc(http.MethodGet, "/index.html", c.index)
 	r.HandlerFunc(http.MethodGet, "/current.jpg", c.current)
+	r.HandlerFunc(http.MethodGet, "/history", c.history)
 	r.HandlerFunc(http.MethodGet, "/cluster/:idx", c.cluster)
 	r.HandlerFunc(http.MethodGet, "/image/:name", c.image)
+	r.HandlerFunc(http.MethodGet, "/metadata", c.metadata)
+	r.HandlerFunc(http.MethodGet, "/manifest.json", c.manifest)
+
+}
+
+func (c *Controller) manifest(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(`
+{
+	"display": "standalone"
+}
+`))
+}
+
+const myFormat = "Mon, 02 Jan 2006 15:04:05"
+const justTime = "15:04:05"
+
+func (c *Controller) metadata(w http.ResponseWriter, r *http.Request) {
+	type MetaModel struct {
+		Temp         string
+		Hum          string
+		Images       int
+		LastMod      string
+		CameraName   string
+		LocationName string
+		Storage      string
+	}
+
+	files, _ := os.ReadDir(c.app.timelapseDir)
+	parts, _ := disk.Partitions(true)
+	size := uint64(0)
+	for _, p := range parts {
+		device := p.Mountpoint
+		s, _ := disk.Usage(device)
+		size += s.Used
+	}
+
+	model := MetaModel{
+		Temp:         fmt.Sprintf("%d°C", int(math.Round(c.sensors.T().Celsius()))),
+		Hum:          fmt.Sprintf("%d %% rH", int(math.Round(c.sensors.RH().Humidity()))),
+		Images:       len(files),
+		LastMod:      time.Now().In(c.loc).Format(justTime),
+		CameraName:   "cat-cam-01",
+		LocationName: "Am Vorberg 16",
+		Storage:      fmt.Sprintf("%.2f GiB", float64(size)/1024/1024/1024),
+	}
+
+	buf, err := json.Marshal(model)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	w.Header().Set("content-type", "application/json")
+	w.Write(buf)
 }

@@ -90,7 +90,7 @@ func (a *Application) runTimelapse() {
 		"--height", "720",
 		"-t", "0",
 		"--exif", "IFD0.Orientation=8", // 3=180, 6=90, 8=270
-		//"--saturation", "0",
+		"--saturation", "0",
 	)
 
 	cmd.Env = os.Environ()

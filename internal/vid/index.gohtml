@@ -1,60 +1,129 @@
 <!doctype html>
-<html>
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta http-equiv="refresh" content="10"/>
+    <title>cat-cam</title>
 </head>
-<body class="bg-gray-100">
+<body class="bg-black h-screen relative">
+<img id="display" class="h-full m-auto object-contain" src="" alt="">
 
-<div class="app bg-gray-100 h-screen p-12">
-    <main class="grid grid-cols-1 gap-6  w-2xl container px-2 mx-auto">
-        <div class="bg-white shadow rounded-lg p-10">
-            <div class="flex flex-col gap-1 text-center items-center">
-                <a href="/current.jpg">
-                    <img class="h-128 w-128 bg-white p-2 rounded-lg shadow mb-4" src="/current.jpg" alt="">
-                </a>
-                <p class="font-semibold">cat-cam-01</p>
-                <div class="text-sm leading-normal text-gray-400 flex justify-center items-center">
-                    <svg viewBox="0 0 24 24" class="mr-1" width="16" height="16" stroke="currentColor" stroke-width="2"
-                         fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
-                    Am Vorberg 16
-                </div>
+<div class="h-full w-full grid justify-items-center absolute top-0 left-0">
+    <div class="self-start">
+        <div class="mt-2 grid gap-1 grid-cols-3 justify-center">
+            <div class="text-white self-center bg-black flex rounded  overflow-hidden opacity-50">
+                <div id="labelCameraName" class="p-3 px-4">?</div>
             </div>
-            <div class="flex justify-center items-center gap-2 my-3">
-                <div class="font-semibold text-center mx-4">
-                    <p class="text-black">{{.ImageCount}}</p>
-                    <span class="text-gray-400">Aufnahmen</span>
+
+            <a id="downloadCurrent" class="self-center" href="/current.jpg" download>
+                <div class="text-white bg-black flex rounded overflow-hidden opacity-50 hover:opacity-100">
+                    <button id="labelLastMod" class="px-4">
+                        ?
+                    </button>
+                    <div class="p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                        </svg>
+                    </div>
                 </div>
-                <div class="font-semibold text-center mx-4">
-                    <p class="text-black">{{.LastImageMod}}</p>
-                    <span class="text-gray-400">letzte Aufnahme</span>
+            </a>
+
+            <a class="self-center" href="/history">
+                <div class="text-white bg-black flex rounded overflow-hidden opacity-50 hover:opacity-100">
+
+                    <button class="px-4">
+                        Aufnahmen
+                    </button>
+                    <div class="p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+
                 </div>
-                <div class="font-semibold text-center mx-4">
-                    <p class="text-black">{{.GBInUse}}</p>
-                    <span class="text-gray-400">Speicherplatz</span>
-                </div>
-                <div class="font-semibold text-center mx-4">
-                    <p class="text-black">{{.Degree}}</p>
-                    <span class="text-gray-400">Temperatur</span>
-                </div>
-                <div class="font-semibold text-center mx-4">
-                    <p class="text-black">{{.Hum}}</p>
-                    <span class="text-gray-400">rel. Feuchtigkeit</span>
-                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="self-end absolute">
+        <div class="mb-2 grid gap-1 grid-cols-5 justify-center">
+
+            <div class="text-white bg-black flex rounded align-middle overflow-hidden opacity-50">
+                <div id="labelTemp" class="p-3 px-4 m-auto">?</div>
             </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div id="labelHum" class="p-3 px-4 m-auto">?</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div id="labelCount" class="p-3 px-4 m-auto">?</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div id="labelStorage" class="p-3 px-4 m-auto">?</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div id="labelAddress" class="p-3 px-4 m-auto">?</div>
+            </div>
+
         </div>
 
-        <div class="bg-white shadow rounded-lg p-10">
-            {{range $i, $a  := .Cluster}}
-                <a href="cluster/{{$i}}"><p>{{$a.From}} bis {{$a.To}} ({{$a.ImageCount}} Aufnahmen)</p></a>
-            {{end}}
-        </div>
-    </main>
+    </div>
 </div>
+
+<script type="application/javascript">
+    let labelLastMod = document.getElementById("labelLastMod");
+    let labelCameraName = document.getElementById("labelCameraName");
+    let labelTemp = document.getElementById("labelTemp");
+    let labelHum = document.getElementById("labelHum");
+    let labelCount = document.getElementById("labelCount");
+    let labelStorage = document.getElementById("labelStorage");
+    let labelAddress = document.getElementById("labelAddress");
+    let downloadCurrent = document.getElementById("downloadCurrent");
+
+    let img = document.getElementById("display");
+    let loading = true;
+    img.addEventListener("load", ev => {
+        loading = false;
+        update();
+    });
+
+    function update() {
+
+        fetch('/metadata')
+            .then(response => response.json())
+            .then(data => {
+                labelLastMod.innerText = data.LastMod;
+                labelCameraName.innerText = data.CameraName;
+                labelTemp.innerText = data.Temp;
+                labelHum.innerText = data.Hum;
+                labelCount.innerText = data.Images;
+                labelStorage.innerText = data.Storage;
+                labelAddress.innerText = data.LocationName;
+
+                loading = true;
+                img.src = "/current.jpg?id=" + new Date().getMilliseconds();
+                downloadCurrent.href = img.src
+            }).catch(e => {
+            console.log(e);
+            loading = false;
+            setTimeout(update, 5000);
+        });
+    }
+
+
+    update();
+
+
+</script>
 </body>
 </html>
+

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Live-cam</title>
+</head>
+<body class="bg-black h-screen relative">
+<img class="h-full m-auto" src="dev.jpeg" alt="">
+
+<div class="h-full w-full grid justify-items-center absolute top-0 left-0">
+    <div class="self-start ">
+        <div class="mt-2 grid gap-1 grid-cols-3 justify-center">
+            <div class="text-white self-center  bg-black flex rounded  overflow-hidden opacity-50">
+                <div class="p-3 px-4">cat-cam-01</div>
+            </div>
+
+            <a class="self-center" href="#">
+                <div class="text-white bg-black flex rounded overflow-hidden opacity-50 hover:opacity-100">
+
+                    <button onclick="" class="px-4">
+                        12:06:32
+                    </button>
+
+                    <div class="p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                        </svg>
+                    </div>
+
+                </div>
+            </a>
+
+            <a class="self-center" href="#">
+                <div class="text-white bg-black flex rounded  overflow-hidden opacity-50 hover:opacity-100">
+                    <button class="px-4">
+                        Aufnahmen
+                    </button>
+                    <div class="p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="self-end absolute">
+        <div class="mb-2 grid gap-1 grid-cols-5 justify-center">
+
+            <div class="text-white bg-black flex rounded align-middle overflow-hidden opacity-50">
+                <div class="p-3 px-4 m-auto">12°C</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div class="p-3 px-4 m-auto">42% rH</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div class="p-3 px-4 m-auto">11234 Bilder</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div class="p-3 px-4 m-auto">12GB verwendet</div>
+            </div>
+
+            <div class="text-white bg-black flex rounded  overflow-hidden opacity-50">
+                <div class="p-3 px-4 m-auto">Am Vorberg 16</div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>
