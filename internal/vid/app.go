@@ -78,27 +78,34 @@ func (a *Application) removeOldest() {
 }
 
 func (a *Application) runTimelapse() {
-	// https://www.waveshare.com/wiki/RPi_Camera_(C)#libcamera-still
-	// libcamera-still --timelapse 1000 -q 80 --timestamp  --latest current.jpg --nopreview --width 1280 --height 720 -t 0
-	cmd := exec.Command("/usr/bin/libcamera-still",
-		"--timelapse", "1000",
-		"-q", "80",
-		"--timestamp",
-		"--latest", "current.jpg",
-		"--nopreview",
-		"--width", "960",
-		"--height", "720",
-		"-t", "0",
-		"--exif", "IFD0.Orientation=8", // 3=180, 6=90, 8=270
-		"--saturation", "0",
-	)
+	for {
+		// https://www.waveshare.com/wiki/RPi_Camera_(C)#libcamera-still
+		// libcamera-still --timelapse 1000 -q 80 --timestamp  --latest current.jpg --nopreview --width 1280 --height 720 -t 0
+		cmd := exec.Command("/usr/bin/libcamera-still",
+			"--timelapse", "1000",
+			"-q", "80",
+			"--timestamp",
+			"--latest", "current.jpg",
+			"--nopreview",
+			"--width", "960", // different aspect ratio => use entire sensor
+			"--height", "720",
+			"-t", "0",
+			"--exif", "IFD0.Orientation=8", // 3=180, 6=90, 8=270
+			"--saturation", "0",
+		)
 
-	cmd.Env = os.Environ()
-	cmd.Stdout = io.Discard
-	cmd.Stderr = io.Discard //os.Stdout // very chatty, cannot turn that off
-	cmd.Dir = a.timelapseDir
+		cmd.Env = os.Environ()
+		cmd.Stdout = io.Discard
+		cmd.Stderr = io.Discard //os.Stdout // very chatty, cannot turn that off
+		cmd.Dir = a.timelapseDir
 
-	if err := cmd.Run(); err != nil {
-		fmt.Printf("libcamera-still timelapse failed: %v", err)
+		if err := cmd.Run(); err != nil {
+			fmt.Printf("libcamera-still timelapse failed: %v\n", err)
+			time.Sleep(5 * time.Second)
+			fmt.Printf("retry libcamera\n")
+			continue
+		}
+
+		break // exit without error, sighub?
 	}
 }
