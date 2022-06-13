@@ -162,6 +162,7 @@ func (c *Controller) model() idxModel {
 
 func (c *Controller) current(w http.ResponseWriter, r *http.Request) {
 	fname := filepath.Join(c.app.timelapseDir, "current.jpg")
+	w.Header().Set("Cache-Control", "no-cache")
 	file, err := os.Open(fname)
 	if err != nil {
 		fmt.Println(err)
