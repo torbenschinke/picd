@@ -163,16 +163,28 @@ func (c *Controller) model() idxModel {
 func (c *Controller) current(w http.ResponseWriter, r *http.Request) {
 	fname := filepath.Join(c.app.timelapseDir, "current.jpg")
 	w.Header().Set("Cache-Control", "no-cache")
-	file, err := os.Open(fname)
-	if err != nil {
-		fmt.Println(err)
-		w.WriteHeader(http.StatusNotFound)
-		return
+	retries := 10
+NEXT_TRY:
+	for i := 0; i < retries; i++ {
+		file, err := os.Open(fname)
+		if err != nil && i == retries-1 {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		// this may fail randomly, because we may accidently tried to open the rewritten current.jpg
+		if err != nil && i < retries {
+			time.Sleep(time.Millisecond * 100)
+			continue NEXT_TRY
+		}
+
+		defer file.Close()
+
+		io.Copy(w, file)
+		break
 	}
 
-	defer file.Close()
-
-	io.Copy(w, file)
 }
 
 func (c *Controller) image(w http.ResponseWriter, r *http.Request) {
