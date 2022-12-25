@@ -110,7 +110,7 @@
                 labelAddress.innerText = data.LocationName;
 
                 loading = true;
-                img.src = "/current.jpg?id=" + new Date().getUTCMilliseconds();
+                img.src = "/current.jpg?id=" + new Date().getTime();
                 downloadCurrent.href = img.src
             }).catch(e => {
             console.log(e);
